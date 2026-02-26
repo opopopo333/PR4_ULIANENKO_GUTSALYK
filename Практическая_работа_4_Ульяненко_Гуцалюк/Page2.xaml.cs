@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Практическая_работа_4_Ульяненко_Гуцалюк
 {
@@ -27,11 +28,13 @@ namespace Практическая_работа_4_Ульяненко_Гуцал�
 
         private void BtnCalc_Click(object sender, RoutedEventArgs e)
         {
-            double x = double.Parse(tbX.Text);
-            double q = double.Parse(tbQ.Text);
+            if (!double.TryParse(tbX.Text, out double x) || !double.TryParse(tbQ.Text, out double q))
+            {
+                MessageBox.Show("Пожалуйста, введите числовые значения для X и Q!", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            double fx = 0;
-
+            double fx;
             if (rbSh.IsChecked == true)
                 fx = Math.Sinh(x);
             else if (rbX2.IsChecked == true)
@@ -40,7 +43,7 @@ namespace Практическая_работа_4_Ульяненко_Гуцал�
                 fx = Math.Exp(x);
             else
             {
-                MessageBox.Show("Выберите функцию f(x)");
+                MessageBox.Show("Выберите функцию f(x)!", "Ошибка выбора", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -48,13 +51,25 @@ namespace Практическая_работа_4_Ульяненко_Гуцал�
             double k;
 
             if (absXq > 10)
-                k = Math.Log(Math.Abs(fx) + Math.Abs(q));
+            {
+                double logArg = Math.Abs(fx) + Math.Abs(q);
+                if (logArg <= 0)
+                {
+                    MessageBox.Show("Ошибка: Аргумент логарифма должен быть больше нуля.", "Математическая ошибка");
+                    return;
+                }
+                k = Math.Log(logArg);
+            }
             else if (absXq < 10)
+            {
                 k = Math.Exp(fx + q);
-            else
+            }
+            else 
+            {
                 k = fx + q;
+            }
 
-            tbResult.Text = k.ToString();
+            tbResult.Text = Math.Round(k, 6).ToString();
         }
 
         private void BtnClear_Click(object sender, RoutedEventArgs e)

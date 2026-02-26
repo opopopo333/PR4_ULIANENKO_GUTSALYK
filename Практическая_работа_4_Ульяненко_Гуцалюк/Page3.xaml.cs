@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using MessageBox = System.Windows.MessageBox;
 
 namespace Практическая_работа_4_Ульяненко_Гуцалюк
 {
@@ -39,21 +39,34 @@ namespace Практическая_работа_4_Ульяненко_Гуцал�
 
         private void BtnCalc_Click(object sender, RoutedEventArgs e)
         {
-            double x0 = double.Parse(tbX0.Text);
-            double xk = double.Parse(tbXk.Text);
-            double dx = double.Parse(tbDx.Text);
-            double b = double.Parse(tbB.Text);
-
-            tbResult.Clear();
-            var series = ChartFunction.Series["f(x)"];
-            series.Points.Clear();
-
-            for (double x = x0; x <= xk; x += dx)
+            if (double.TryParse(tbX0.Text, out double x0) &&
+                double.TryParse(tbXk.Text, out double xk) &&
+                double.TryParse(tbDx.Text, out double dx) &&
+                double.TryParse(tbB.Text, out double b))
             {
-                double y = x * Math.Sin(Math.Sqrt(x + b - 0.0084));
-                tbResult.AppendText($"x = {x:F3}   y = {y:F5}\n");
+                if (dx <= 0 && x0 < xk)
+                {
+                    MessageBox.Show("Шаг dx должен быть больше нуля!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
-                series.Points.AddXY(x, y); // добавляем точку на график
+                tbResult.Clear();
+                var series = ChartFunction.Series["f(x)"];
+                series.Points.Clear();
+
+                for (double x = x0; x <= xk; x = Math.Round(x + dx, 10))
+                {
+                    double arg = x + b - 0.0084;
+                    if (arg < 0) continue;
+
+                    double y = x * Math.Sin(Math.Sqrt(arg));
+                    tbResult.AppendText($"x = {x:F3}   y = {y:F5}\n");
+                    series.Points.AddXY(x, y);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Введите корректные числовые значения!", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
