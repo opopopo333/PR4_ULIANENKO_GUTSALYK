@@ -37,7 +37,7 @@
                Grid.Column="0"
                VerticalAlignment="Center"/>
 
-        <TextBox x:Name="tbX"
+        <TextBox x:Name="tbX" x:FieldModifier="public"
              Grid.Row="1"
              Grid.Column="1"
              Height="30"
@@ -48,7 +48,7 @@
                Grid.Column="0"
                VerticalAlignment="Center"/>
 
-        <TextBox x:Name="tbQ"
+        <TextBox x:Name="tbQ" x:FieldModifier="public"
              Grid.Row="2"
              Grid.Column="1"
              Height="30"
@@ -64,15 +64,15 @@
                 Grid.ColumnSpan="2"
                 Margin="20,0,0,10">
 
-            <RadioButton x:Name="rbSh"
+            <RadioButton x:Name="rbSh" x:FieldModifier="public"
                      Content="sh(x)"
                      Margin="0,5"/>
 
-            <RadioButton x:Name="rbX2"
+            <RadioButton x:Name="rbX2" x:FieldModifier="public"
                      Content="x²"
                      Margin="0,5"/>
 
-            <RadioButton x:Name="rbExp"
+            <RadioButton x:Name="rbExp" x:FieldModifier="public"
                      Content="e^x"
                      Margin="0,5"/>
 
@@ -103,7 +103,7 @@
                VerticalAlignment="Center"
                Margin="0,20,0,0"/>
 
-        <TextBox x:Name="tbResult"
+        <TextBox x:Name="tbResult" x:FieldModifier="public"
              Grid.Row="6"
              Grid.Column="1"
              Height="30"
